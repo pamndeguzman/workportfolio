@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pam De Guzman</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #07060f;
+  --card:  #0f0d1a;
+  --pur:   #9d4edd;
+  --purL:  #c77dff;
+  --purD:  #5a189a;
+  --acc:   #e0aaff;
+  --white: #f2eeff;
+  --muted: rgba(242,238,255,0.45);
+  --bdr:   rgba(157,78,221,0.18);
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--white);
+  font-family: 'Inter', sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* subtle grid */
+body::before {
+  content:'';
+  position:fixed; inset:0;
+  background-image:
+    linear-gradient(rgba(157,78,221,0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(157,78,221,0.05) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events:none;
+  z-index:0;
+}
+
+/* glow blob */
+body::after {
+  content:'';
+  position:fixed;
+  width:700px; height:700px;
+  border-radius:50%;
+  background: radial-gradient(circle, rgba(90,24,154,0.25) 0%, transparent 65%);
+  top:0; right:-200px;
+  pointer-events:none;
+  z-index:0;
+  animation: blobmove 10s ease-in-out infinite;
+}
+
+@keyframes blobmove {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(60px); }
+}
+
+/* ── NAV ── */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:1.1rem 5vw;
+  background: rgba(7,6,15,0.8);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--bdr);
+}
+
+.logo {
+  font-family:'Syne',sans-serif;
+  font-size:1.25rem;
+  font-weight:800;
+  letter-spacing:1px;
+  color:var(--white);
+  text-decoration:none;
+}
+.logo span { color:var(--purL); }
+
+.nav-r { display:flex; align-items:center; gap:2rem; }
+
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a {
+  font-family:'Space Mono',monospace;
+  font-size:0.75rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover { color:var(--purL); }
+
+.nav-badge {
+  font-family:'Space Mono',monospace;
+  font-size:0.7rem;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:0.4rem 1rem;
+  background: linear-gradient(135deg, var(--purD), var(--pur));
+  color:#fff;
+  border-radius:4px;
+  text-decoration:none;
+  animation: badgepulse 2.5s ease-in-out infinite;
+}
+
+@keyframes badgepulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(157,78,221,0.4); }
+  50%      { box-shadow: 0 0 0 8px rgba(157,78,221,0); }
+}
+
+/* ── HERO ── */
+#hero {
+  position:relative; z-index:1;
+  min-height:100vh;
+  display:flex; flex-direction:column; justify-content:center;
+  padding:0 5vw;
+  max-width:900px;
+}
+
+.hero-mono {
+  font-family:'Space Mono',monospace;
+  font-size:0.78rem;
+  font-weight:700;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:var(--purL);
+  margin-bottom:1.5rem;
+  opacity:0;
+  animation: fadeup 0.6s ease 0.2s forwards;
+}
+
+.hero-name {
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(3.5rem,9vw,7.5rem);
+  line-height:1;
+  letter-spacing:-2px;
+  color:var(--white);
+  opacity:0;
+  animation: fadeup 0.7s ease 0.35s forwards;
+}
+
+.hero-name .pur { color:var(--purL); }
+
+.hero-desc {
+  margin-top:1.8rem;
+  max-width:540px;
+  font-size:1.1rem;
+  font-weight:500;
+  color:var(--muted);
+  line-height:1.8;
+  opacity:0;
+  animation: fadeup 0.7s ease 0.5s forwards;
+}
+
+.hero-desc strong { color:var(--white); font-weight:700; }
+
+.hero-chips {
+  display:flex; flex-wrap:wrap; gap:0.5rem;
+  margin-top:2rem;
+  opacity:0;
+  animation: fadeup 0.7s ease 0.65s forwards;
+}
+
+.chip {
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  font-weight:700;
+  letter-spacing:1px;
+  padding:0.3rem 0.85rem;
+  border:1px solid var(--bdr);
+  border-radius:100px;
+  color:var(--acc);
+  background: rgba(157,78,221,0.08);
+}
+
+.hero-btns {
+  display:flex; gap:1rem; flex-wrap:wrap;
+  margin-top:2.5rem;
+  opacity:0;
+  animation: fadeup 0.7s ease 0.8s forwards;
+}
+
+.btn {
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  padding:0.85rem 1.75rem;
+  border-radius:6px;
+  text-decoration:none;
+  transition:all 0.2s;
+  cursor:pointer;
+  border:none;
+}
+
+.btn-solid {
+  background: var(--pur);
+  color:#fff;
+}
+.btn-solid:hover { background:var(--purL); transform:translateY(-2px); }
+
+.btn-outline {
+  background:transparent;
+  color:var(--purL);
+  border:1px solid rgba(157,78,221,0.4);
+}
+.btn-outline:hover { background:rgba(157,78,221,0.1); transform:translateY(-2px); }
+
+/* ── WORK ── */
+#work {
+  position:relative; z-index:1;
+  padding:7rem 5vw;
+}
+
+.sec-label {
+  font-family:'Space Mono',monospace;
+  font-size:0.72rem;
+  font-weight:700;
+  letter-spacing:4px;
+  text-transform:uppercase;
+  color:var(--purL);
+  margin-bottom:0.6rem;
+}
+
+.sec-title {
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(2rem,4vw,3rem);
+  color:var(--white);
+  margin-bottom:3rem;
+  letter-spacing:-1px;
+}
+
+/* tabs */
+.tabs {
+  display:flex; gap:0.5rem; flex-wrap:wrap;
+  margin-bottom:2.5rem;
+}
+
+.tab {
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  font-weight:700;
+  letter-spacing:1.5px;
+  text-transform:uppercase;
+  padding:0.45rem 1.1rem;
+  border-radius:100px;
+  border:1px solid var(--bdr);
+  background:transparent;
+  color:var(--muted);
+  cursor:pointer;
+  transition:all 0.2s;
+}
+
+.tab:hover { color:var(--purL); border-color:var(--pur); }
+.tab.active {
+  background:var(--pur);
+  color:#fff;
+  border-color:var(--pur);
+}
+
+/* project grid */
+.grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(320px,1fr));
+  gap:1.25rem;
+}
+
+.card {
+  background:var(--card);
+  border:1px solid var(--bdr);
+  border-radius:12px;
+  padding:1.6rem;
+  display:flex; flex-direction:column;
+  transition:border-color 0.25s, transform 0.25s, background 0.25s;
+  position:relative;
+  overflow:hidden;
+}
+
+.card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height:2px;
+  background: linear-gradient(90deg, var(--purD), var(--purL));
+  opacity:0;
+  transition:opacity 0.25s;
+}
+
+.card:hover { border-color:rgba(157,78,221,0.4); transform:translateY(-4px); background:rgba(15,13,26,0.9); }
+.card:hover::before { opacity:1; }
+
+.card-type {
+  font-family:'Space Mono',monospace;
+  font-size:0.62rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--purL);
+  margin-bottom:0.6rem;
+}
+
+.card-title {
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:1.1rem;
+  color:var(--white);
+  line-height:1.35;
+  margin-bottom:0.8rem;
+}
+
+.card-desc {
+  font-size:0.95rem;
+  font-weight:500;
+  color:var(--muted);
+  line-height:1.75;
+  flex:1;
+  margin-bottom:1.2rem;
+}
+
+.card-stack {
+  display:flex; flex-wrap:wrap; gap:0.35rem;
+  margin-bottom:1.1rem;
+}
+
+.stag {
+  font-family:'Space Mono',monospace;
+  font-size:0.58rem;
+  font-weight:700;
+  letter-spacing:0.5px;
+  padding:0.2rem 0.55rem;
+  background:rgba(157,78,221,0.1);
+  border:1px solid rgba(157,78,221,0.2);
+  border-radius:4px;
+  color:var(--acc);
+}
+
+.card-link {
+  font-family:'Space Mono',monospace;
+  font-size:0.68rem;
+  font-weight:700;
+  letter-spacing:1px;
+  color:var(--purL);
+  text-decoration:none;
+  display:inline-flex; align-items:center; gap:0.4rem;
+  transition:color 0.2s;
+  margin-top:auto;
+}
+.card-link:hover { color:#fff; }
+.card-link::after { content:'→'; }
+
+/* paper cards get a small accent */
+.paper-card { border-left:3px solid var(--purD); }
+
+/* hidden by default for tab filtering */
+.card[data-cat] { display:flex; }
+
+/* ── CONTACT ── */
+#contact {
+  position:relative; z-index:1;
+  padding:5rem 5vw 8rem;
+  text-align:center;
+}
+
+.contact-inner {
+  max-width:600px;
+  margin:0 auto;
+}
+
+.contact-tagline {
+  font-size:1.05rem;
+  font-weight:500;
+  color:var(--muted);
+  margin-bottom:2.5rem;
+  line-height:1.85;
+}
+
+.contact-tagline strong { color:var(--white); font-weight:700; }
+
+.contact-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1rem;
+  margin-bottom:2rem;
+}
+
+.contact-item {
+  background:var(--card);
+  border:1px solid var(--bdr);
+  border-radius:10px;
+  padding:1.2rem;
+  text-align:left;
+  transition:border-color 0.2s;
+}
+.contact-item:hover { border-color:var(--pur); }
+
+.c-label {
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;
+  font-weight:700;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  color:var(--purL);
+  margin-bottom:0.4rem;
+}
+
+.c-val {
+  font-size:0.9rem;
+  font-weight:600;
+  color:var(--white);
+  text-decoration:none;
+  word-break:break-all;
+}
+.c-val:hover { color:var(--purL); }
+
+/* ── FOOTER ── */
+footer {
+  position:relative; z-index:1;
+  border-top:1px solid var(--bdr);
+  padding:1.5rem 5vw;
+  display:flex; justify-content:space-between; align-items:center;
+}
+
+.foot-name {
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:0.9rem;
+  color:var(--purL);
+  letter-spacing:1px;
+}
+
+.foot-copy {
+  font-family:'Space Mono',monospace;
+  font-size:0.6rem;
+  font-weight:700;
+  color:var(--muted);
+  letter-spacing:1px;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeup {
+  from { opacity:0; transform:translateY(24px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.reveal {
+  opacity:0;
+  transform:translateY(20px);
+  transition:opacity 0.55s ease, transform 0.55s ease;
+}
+.reveal.in { opacity:1; transform:translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px) {
+  nav { padding:1rem 1.5rem; }
+  .nav-links { display:none; }
+  #hero { padding:0 1.5rem; }
+  #work, #contact { padding:5rem 1.5rem; }
+  .contact-grid { grid-template-columns:1fr; }
+  footer { flex-direction:column; gap:0.5rem; text-align:center; padding:1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="logo">PAM<span>.</span></a>
+  <div class="nav-r">
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="#contact" class="nav-badge">Open for Commissions</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-mono">Computer Engineer · Manila, PH</div>
+  <h1 class="hero-name">
+    PAM<br><span class="pur">DE GUZMAN</span>
+  </h1>
+  <p class="hero-desc">
+    <strong>BS Computer Engineering</strong> graduate from Mapua University. IEEE-published researcher and former Product Engineer at Huawei. I build web apps, Android apps, machine learning systems, and embedded projects.
+  </p>
+  <div class="hero-chips">
+    <span class="chip">Web Development</span>
+    <span class="chip">Android Apps</span>
+    <span class="chip">Machine Learning</span>
+    <span class="chip">Embedded Systems</span>
+    <span class="chip">Python</span>
+    <span class="chip">Technical Writing</span>
+  </div>
+  <div class="hero-btns">
+    <a href="#work" class="btn btn-solid">See My Work</a>
+    <a href="#contact" class="btn btn-outline">Hire Me</a>
+  </div>
+</section>
+
+<!-- WORK -->
+<section id="work">
+  <div class="sec-label">Portfolio</div>
+  <h2 class="sec-title">What I Have Built</h2>
+
+  <div class="tabs">
+    <button class="tab active" data-filter="all">All</button>
+    <button class="tab" data-filter="web">Web</button>
+    <button class="tab" data-filter="android">Android</button>
+    <button class="tab" data-filter="research">Research</button>
+    <button class="tab" data-filter="embedded">Embedded</button>
+  </div>
+
+  <div class="grid" id="grid">
+
+    <!-- AQUALYTICA -->
+    <div class="card reveal" data-cat="web">
+      <div class="card-type">Web App</div>
+      <div class="card-title">Aqualytica</div>
+      <div class="card-desc">Full-stack mangrove ecosystem monitoring platform. Real-time carbon stock tracking, species distribution charts, and interactive geospatial mapping via MapLibre GL. AI-powered engine auto-generates ecological reports from field data.</div>
+      <div class="card-stack">
+        <span class="stag">React.js</span>
+        <span class="stag">MapLibre GL</span>
+        <span class="stag">AI API</span>
+        <span class="stag">Firebase</span>
+        <span class="stag">REST APIs</span>
+      </div>
+      <a href="https://studio--studio-8284768301-10a15.us-central1.hosted.app/" target="_blank" class="card-link">Live Demo</a>
+    </div>
+
+    <!-- WEED DETECTION -->
+    <div class="card reveal" data-cat="android">
+      <div class="card-type">Android · ML</div>
+      <div class="card-title">ML Weed Detection System</div>
+      <div class="card-desc">Android app that classifies weed species from camera images using a trained machine learning model. Includes a built-in strain guide with botanical profiles for each detected species.</div>
+      <div class="card-stack">
+        <span class="stag">Android Java</span>
+        <span class="stag">TensorFlow Lite</span>
+        <span class="stag">Image Classification</span>
+      </div>
+    </div>
+
+    <!-- HYDROGATE -->
+    <div class="card reveal" data-cat="android">
+      <div class="card-type">Android · IoT</div>
+      <div class="card-title">HydroGate</div>
+      <div class="card-desc">Smart water management app connected to an Arduino system. Displays real-time water levels and allows remote valve control, replacing physical switches with a clean mobile interface.</div>
+      <div class="card-stack">
+        <span class="stag">Android Java</span>
+        <span class="stag">Arduino</span>
+        <span class="stag">Bluetooth</span>
+        <span class="stag">Embedded C</span>
+      </div>
+    </div>
+
+    <!-- ACNE -->
+    <div class="card reveal" data-cat="android">
+      <div class="card-type">Android · Healthcare AI</div>
+      <div class="card-title">Acne Severity Detection System</div>
+      <div class="card-desc">Mobile app that analyzes facial images and classifies acne severity using a convolutional neural network. Trained on annotated datasets with lighting normalization preprocessing.</div>
+      <div class="card-stack">
+        <span class="stag">Android Java</span>
+        <span class="stag">CNN</span>
+        <span class="stag">TensorFlow Lite</span>
+        <span class="stag">Computer Vision</span>
+      </div>
+    </div>
+
+    <!-- PAGER -->
+    <div class="card reveal" data-cat="embedded">
+      <div class="card-type">Embedded Systems</div>
+      <div class="card-title">Restaurant Pager Calling System</div>
+      <div class="card-desc">Microcontroller-based wireless paging system for restaurant service management. Built on ATmega328P with custom RF communication logic and a multi-pager receiver network.</div>
+      <div class="card-stack">
+        <span class="stag">ATmega328P</span>
+        <span class="stag">Embedded C</span>
+        <span class="stag">RF Communication</span>
+      </div>
+    </div>
+
+    <!-- FSM -->
+    <div class="card reveal" data-cat="embedded">
+      <div class="card-type">Digital Logic · Internship</div>
+      <div class="card-title">FSM Vending Machine (Verilog HDL)</div>
+      <div class="card-desc">Designed and simulated a Train Ticket and Drink Vending Machine using Finite State Machines in Verilog HDL at Chung Yuan Christian University, Taiwan. Verified with waveform analysis in ModelSim.</div>
+      <div class="card-stack">
+        <span class="stag">Verilog HDL</span>
+        <span class="stag">ModelSim</span>
+        <span class="stag">FSM Design</span>
+        <span class="stag">FPGA</span>
+      </div>
+    </div>
+
+    <!-- PAPER 1 -->
+    <div class="card paper-card reveal" data-cat="research">
+      <div class="card-type">IEEE Publication</div>
+      <div class="card-title">ML Pothole Detection and Alert System Using Arduino Accelerometer</div>
+      <div class="card-desc">Published at the 2023 IEEE 15th International Conference on HNICEM. Machine learning model integrated with onboard Arduino accelerometer for real-time road hazard detection.</div>
+      <div class="card-stack">
+        <span class="stag">Machine Learning</span>
+        <span class="stag">Arduino</span>
+        <span class="stag">IoT</span>
+        <span class="stag">IEEE</span>
+      </div>
+      <a href="https://ieeexplore.ieee.org/document/10589151/" target="_blank" class="card-link">IEEE Xplore</a>
+    </div>
+
+    <!-- PAPER 2 -->
+    <div class="card paper-card reveal" data-cat="research">
+      <div class="card-type">IEEE Publication · AGRETA 2024 · 96% Accuracy</div>
+      <div class="card-title">E-Nose Detection of Spoilage in Filipino Dishes Using PCA and KNN</div>
+      <div class="card-desc">Electronic nose-based spoilage detection for coconut milk-based Filipino dishes. Achieved 96% accuracy using PCA and KNN algorithms. Presented at AGRETA 2024.</div>
+      <div class="card-stack">
+        <span class="stag">PCA</span>
+        <span class="stag">KNN</span>
+        <span class="stag">E-Nose</span>
+        <span class="stag">Food Safety</span>
+        <span class="stag">IEEE</span>
+      </div>
+      <a href="https://ieeexplore.ieee.org/document/10948894/" target="_blank" class="card-link">IEEE Xplore</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="sec-label" style="text-align:center;">Get in Touch</div>
+    <h2 class="sec-title" style="text-align:center;">Open for Commissions</h2>
+    <p class="contact-tagline">
+      Available for <strong>web and app development, machine learning, Python automation, technical writing, data analysis,</strong> and <strong>embedded systems</strong> projects. Serious inquiries are welcome.
+    </p>
+    <div class="contact-grid reveal">
+      <div class="contact-item">
+        <div class="c-label">Email</div>
+        <a href="mailto:pamelanicoledeguzman@gmail.com" class="c-val">pamelanicoledeguzman@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="c-label">Phone</div>
+        <a href="tel:+639212548330" class="c-val">+63 921 254 8330</a>
+      </div>
+      <div class="contact-item">
+        <div class="c-label">Location</div>
+        <span class="c-val">Manila, Philippines</span>
+      </div>
+      <div class="contact-item">
+        <div class="c-label">Live Project</div>
+        <a href="https://studio--studio-8284768301-10a15.us-central1.hosted.app/" target="_blank" class="c-val">Aqualytica Demo</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-name">Pam De Guzman</div>
+  <div class="foot-copy">Computer Engineer · Open for Commissions · 2025</div>
+</footer>
+
+<script>
+// Tab filter
+const tabs = document.querySelectorAll('.tab');
+const cards = document.querySelectorAll('.card[data-cat]');
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    const f = tab.dataset.filter;
+    cards.forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.cat === f) ? 'flex' : 'none';
+    });
+  });
+});
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+
+</body>
+</html>
